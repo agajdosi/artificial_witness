@@ -316,7 +316,7 @@ button:disabled{
     cursor: wait;
 }
 
-button.next-round {
+button.next-round:disabled {
     cursor: not-allowed;
 }
 
