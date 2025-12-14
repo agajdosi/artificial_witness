@@ -1,9 +1,10 @@
 FROM golang:1.25-alpine AS builder
 WORKDIR /app
+RUN apk add --no-cache build-base
 COPY go.mod go.sum ./
 RUN go mod download
 COPY ./backend ./backend
-RUN go build -o /artsus_server backend/main.go
+RUN CGO_ENABLED=1 go build -o /artsus_server backend/main.go
 
 FROM alpine:latest
 COPY --from=builder /artsus_server /artsus_server
