@@ -32,8 +32,22 @@
     }
 
     // TODO: also set the name to the local storage, here or inside the function
-    function saveScore() {
-        SaveScore(name, $currentGame.uuid);
+    async function saveScore(e: Event) {
+        await SaveScore(name, $currentGame.uuid);
+        const target = e.target as HTMLElement | null;
+        if (target) {
+            target.style.display = "none";
+        }
+        
+        const input = document.getElementById("name_input") as HTMLInputElement | null;
+        if (input) {
+            const span = document.createElement("span");
+            span.textContent = input.value;
+            span.id = input.id;
+            input.replaceWith(span);
+        }
+
+        
     }
 
     // Helper function to return the position label (medal or rank)
@@ -73,7 +87,7 @@
                         
                         {#if isCurrentGame(score.GameUUID)}
                             <span>
-                                <input
+                                <input id="name_input"
                                     bind:value={name}
                                     on:mouseenter={() => hint.set("Inscribe your name to the leaderboards.")}
                                     on:mouseleave={() => hint.set("")}
