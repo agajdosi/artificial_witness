@@ -40,4 +40,14 @@ button{
     background-color: grey;
     width: 50vw;
 }
+
+@media screen and (max-width: 600px) {
+.infobox {
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+}
 </style>
