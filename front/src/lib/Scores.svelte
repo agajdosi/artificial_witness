@@ -159,7 +159,14 @@ h1 {
 .riptext {
     padding: 0 2rem;
 }
-.offline {
-    cursor: wait;
+
+@media screen and (max-width: 600px) {
+.infobox {
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
 }
+}
+
 </style>
