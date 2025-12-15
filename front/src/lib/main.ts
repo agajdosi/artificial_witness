@@ -3,7 +3,7 @@ import { get } from 'svelte/store';
 
 // MARK: CONSTANTS
 
-const API_URL = import.meta.env.PROD ? 'https://artificial_witness.lab.gajdosik.org' : 'http://localhost:8080';
+const API_URL = import.meta.env.PROD ? 'https://api.artificialwitness.com/' : 'http://localhost:8080';
 const initGET = {
     method: 'GET',
     headers: {
