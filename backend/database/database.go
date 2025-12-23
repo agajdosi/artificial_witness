@@ -371,8 +371,8 @@ type Investigation struct {
 	UUID              string    `json:"uuid"`
 	GameUUID          string    `json:"game_uuid"`
 	Suspects          []Suspect `json:"suspects"`
-	Rounds            []Round   `json:"rounds"` // Ordered from oldest (first) to newest (last), 1st round is [0], 2nd [1] etc.
-	CriminalUUID      string    `json:"CriminalUUID"`
+	Rounds            []Round   `json:"rounds"`            // Ordered from oldest (first) to newest (last), 1st round is [0], 2nd [1] etc.
+	CriminalUUID      string    `json:"-"`                 // Do not expose in JSON!
 	InvestigationOver bool      `json:"InvestigationOver"` // Last standing is the Criminal
 	Timestamp         string    `json:"Timestamp"`
 }
