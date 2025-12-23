@@ -204,25 +204,6 @@ func NextRoundHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	service, err := database.GetServiceForModel(game.Model)
-	if err != nil {
-		log.Printf("NextRoundHandler() could not get service for model %s: %v\n", game.Model, err)
-		return
-	}
-
-	descriptions, err := database.GetDescriptionsForSuspect(
-		game.Investigation.CriminalUUID,
-		game.Model,
-		false, // do not be strict, allow fallback to any description
-	)
-	if err != nil {
-		log.Println("NextRoundHandler() could not get descriptions for suspect")
-		return
-	}
-
-	x := randomForThisInvestigation(game.Investigation.UUID, len(descriptions))
-	go database.GenerateAnswer(round.Question.English, descriptions[x].Description, game.Model, service)
-
 	w.WriteHeader(http.StatusOK)
 	w.Write(resp)
 }
