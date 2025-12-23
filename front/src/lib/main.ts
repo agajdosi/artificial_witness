@@ -199,7 +199,8 @@ export async function NextRound() {
 }
 
 export async function NextInvestigation(): Promise<Game> {
-    const response = await fetch(`${API_URL}/next_investigation`, initGET);
+    const player = get(currentPlayer);
+    const response = await fetch(`${API_URL}/next_investigation?player_uuid=${player.UUID}`, initGET);
 
     if (!response.ok) {
         throw new Error('Failed to fetch next investigation');
