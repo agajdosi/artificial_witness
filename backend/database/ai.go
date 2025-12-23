@@ -252,6 +252,7 @@ Avoid all self-referential or refusal statements. Focus entirely on creative int
 // or other services compatible with OpenAI styled API.
 // TODO: Add option to switch service (OpenAI, Anthropic, etc.)
 func GenerateAnswer(question, description, model string, service Service) (string, error) {
+	log.Printf("func GenerateAnswer() called with question: %s\n", question)
 	config := openai.DefaultConfig(service.Token)
 	if service.URL.String != "" {
 		config.BaseURL = service.URL.String

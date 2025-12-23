@@ -58,14 +58,6 @@
         console.log(`GAME OVER: ${game.GameOver}`);
     }
 
-    async function nextInvestigation(){
-        let game = await NextInvestigation();
-        game.GameOver = false;
-        currentGame.set(game);
-        console.log("GOT NEW INVESTIGATION", game)
-    }
-    
-
     // Scores
     function handleToggleScores(event: CustomEvent<{scoresVisible: boolean}>) {
         scoresVisible = event.detail.scoresVisible;
@@ -172,7 +164,7 @@
             investigationOver={$currentGame.investigation?.InvestigationOver}
             answerIsLoading={$currentGame.investigation?.rounds?.at(-1)?.answer == ""}
             on:suspect_freeing={handleSuspectFreeing}
-            on:suspect_jailing={nextInvestigation}
+            on:suspect_jailing={NextInvestigation}
         />
 
         <div class="actions">

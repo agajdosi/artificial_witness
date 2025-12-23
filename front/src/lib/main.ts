@@ -135,11 +135,12 @@ export async function NewGame(model: string): Promise<Game> {
         throw error;
     }
 
+    // THEN GENERATE ANSWER
     const lastRoundUUID = newGame.investigation.rounds.at(-1)?.uuid;
     if (!lastRoundUUID) {
         throw new Error('Last Round UUID not found in new game');
     }
-    const answer = await generateAnswer(lastRoundUUID);
+    const answer = await getOrGenerateAnswer(lastRoundUUID);
 
     if (newGame.investigation.rounds.at(-1)) {
         const answerText = answer?.Text;
@@ -183,7 +184,7 @@ export async function NextRound() {
     if (!lastRoundUUID) {
         throw new Error('Last Round UUID not found in new game');
     }
-    const answer = await generateAnswer(lastRoundUUID);
+    const answer = await getOrGenerateAnswer(lastRoundUUID);
 
     if (game.investigation.rounds.at(-1)) {
         const answerText = answer?.Text;
@@ -198,7 +199,7 @@ export async function NextRound() {
     currentGame.set(game);
 }
 
-export async function NextInvestigation(): Promise<Game> {
+export async function NextInvestigation() {
     const player = get(currentPlayer);
     const response = await fetch(`${API_URL}/next_investigation?player_uuid=${player.UUID}`, initGET);
 
@@ -206,7 +207,28 @@ export async function NextInvestigation(): Promise<Game> {
         throw new Error('Failed to fetch next investigation');
     }
 
-    return await response.json();
+    let game: Game = await response.json();
+    console.log(`>>> NEW INVESTIGATION: ${game.investigation.uuid}`);
+    currentGame.set(game);
+    
+    // THEN GENERATE ANSWER
+    const lastRoundUUID = game.investigation.rounds.at(-1)?.uuid;
+    if (!lastRoundUUID) {
+        throw new Error('Last Round UUID not found in new game');
+    }
+    const answer = await getOrGenerateAnswer(lastRoundUUID);
+
+    if (game.investigation.rounds.at(-1)) {
+        const answerText = answer?.Text;
+        if (!answerText) {
+            throw new Error('Generated answer is empty');
+        }
+        if (!game.investigation.rounds[game.investigation.rounds.length - 1]) {
+            throw new Error('Last round not found in new game');
+        } 
+        game.investigation.rounds[game.investigation.rounds.length - 1].answer = answerText;
+    }
+    currentGame.set(game);
 }
 
 export async function EliminateSuspect(suspectUUID: string, roundUUID: string, investigationUUID: string): Promise<void> {
@@ -256,9 +278,9 @@ export async function ListAvailableModels(allowedOnly: boolean, orderBy: string)
     return await response.json();
 }
 
-export async function generateAnswer(roundUUID: string): Promise<Answer|undefined> {
+export async function getOrGenerateAnswer(roundUUID: string): Promise<Answer|undefined> {
     const player = get(currentPlayer);
-    console.log(`>>> generateAnswer called! roundUUID=${roundUUID}`);
+    console.log(`>>> getOrGenerateAnswer called! roundUUID=${roundUUID}`);
     try {
         let answer: Answer; 
         const response = await fetch(`${API_URL}/get_or_generate_answer?player_uuid=${player.UUID}`, initGET);
@@ -270,7 +292,7 @@ export async function generateAnswer(roundUUID: string): Promise<Answer|undefine
         console.log(`Got answer: ${answer}`);
         return answer;
     } catch (error) {
-        console.error(`generateAnswer error for round ${roundUUID}:`, error);
+        console.error(`getOrGenerateAnswer error for round ${roundUUID}:`, error);
         // TODO: communicate failure to the user and GUI
     }
 }
