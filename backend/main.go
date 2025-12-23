@@ -142,14 +142,20 @@ func NextInvestigationHandler(w http.ResponseWriter, r *http.Request) {
 
 	game, err := database.GetCurrentGame(playerUUID)
 	if err != nil {
-		log.Printf("NextInvestigation() error: %v", err)
+		log.Printf("NextInvestigationHandler() error: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	game.Investigation, err = database.NewInvestigation(game.UUID)
 	if err != nil {
-		log.Printf("NextInvestigation() error: %v", err)
+		log.Printf("NextInvestigationHandler() error: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	game.Level, err = database.GetLevel(game.UUID)
+	if err != nil {
+		log.Printf("NextInvestigationHandler() could not get Level: %v\n", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

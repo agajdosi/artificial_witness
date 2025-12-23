@@ -294,7 +294,7 @@ func NewGame(playerUUID, model string) (Game, error) {
 	if err != nil {
 		return game, err
 	}
-	game.Level, err = getLevel(game.UUID)
+	game.Level, err = GetLevel(game.UUID)
 	if err != nil {
 		return game, err
 	}
@@ -326,7 +326,7 @@ func GetCurrentGame(playerUUID string) (Game, error) {
 		return game, err
 	}
 
-	game.Level, err = getLevel(game.UUID)
+	game.Level, err = GetLevel(game.UUID)
 	if err != nil {
 		log.Printf("GetCurrentGame() could not get Level: %v\n", err)
 		return game, err
@@ -760,7 +760,7 @@ func SaveAnswer(answer, roundUUID string) error {
 
 // MARK: LEVEL & SCORE
 
-func getLevel(gameUUID string) (int, error) {
+func GetLevel(gameUUID string) (int, error) {
 	var count int
 	query := "SELECT COUNT(*) FROM investigations WHERE game_uuid = $1"
 
@@ -777,7 +777,7 @@ func getLevel(gameUUID string) (int, error) {
 // Elimination in this round. Players are rewarded for risky behaviour - eliminating more than one suspect.
 // But also they are rewarded for longevity - how much investigations they have solved.
 func increaseScore(gameUUID string, roundUUID string) {
-	level, err := getLevel(gameUUID)
+	level, err := GetLevel(gameUUID)
 	if err != nil {
 		log.Println("Could not get level and increase score:", err)
 		return
