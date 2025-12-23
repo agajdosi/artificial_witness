@@ -38,9 +38,19 @@ go run main.go
 
 Run the Docker build from the project root as we need access to go.mod and go.sum files,
 use --file flag to specify the Dockerfile in backend directory:
+
 ```bash
-docker build -t agajdosi/artificial_witness:latest --platform linux/amd64  --file backend/Dockerfile .
-docker push agajdosi/artifical_witness:latest
+VERSION="v1.0.1"
+IMAGE="agajdosi/artificial_witness"
+
+docker build \
+  -t ${IMAGE}:${VERSION} \
+  -t ${IMAGE}:latest \
+  --platform linux/amd64 \
+  --file backend/Dockerfile .
+
+docker push ${IMAGE}:${VERSION}
+docker push ${IMAGE}:latest
 ```
 
 ## Acknowledgments
