@@ -8,6 +8,8 @@
     "waiting": "Wait for the answer",
     "arrest": "Arrest the Perp!",
     "arrestInstruction": "And a new investigation will begin.",
+    "criminalReleased": "Criminal has been released!",
+    "criminalReleasedInstruction": "Try again in a new game.",
     "interrogated": "Interrogated",
     "buttons": {
         "newGame": "New Game",

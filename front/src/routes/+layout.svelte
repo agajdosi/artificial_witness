@@ -210,6 +210,27 @@ BFC prevents margins to overflow outside main and #app, breaking its 100vh.
     min-width: 200px;
 }
 
+:global(.infobox_overlay) {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+:global(.infobox) {
+    background-color: rgba(27, 38, 54, 1);
+    box-sizing: border-box;
+    padding: 1.25rem 1.5rem;
+    width: min(90%, 800px);
+    max-height: 90vh;
+    overflow: auto;
+    border-radius: 8px;
+}
+
+
 @media screen and (max-width: 600px) {
     /* HOME + NEW GAME */
     :global(h1) {
@@ -221,6 +242,15 @@ BFC prevents margins to overflow outside main and #app, breaking its 100vh.
     :global(.menu > button) {
         width: 50vw;
         margin: 1rem;
+    }    
+    :global(.infobox_overlay) {
+        align-items: flex-start;
+        padding-top: 1rem;
+    }
+    :global(.infobox) {
+        width: calc(100% - 2rem);
+        max-height: calc(100vh - 2rem);
+        border-radius: 4px;
     }
 }
 

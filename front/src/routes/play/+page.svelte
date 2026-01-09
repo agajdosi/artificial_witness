@@ -96,7 +96,11 @@
 <div class="top">
     <div class="top-left">
         <div class="main">
-        {#if $currentGame.investigation?.InvestigationOver}
+        {#if $currentGame.GameOver}
+            <div class="jailtime">
+                {$t('criminalReleased')}
+            </div>
+        {:else if $currentGame.investigation?.InvestigationOver}
             <div class="jailtime">
                 {$t('arrest')}
             </div>
@@ -136,7 +140,9 @@
         {/if}
         </div>
         <div class="instruction">
-            {#if $currentGame.investigation?.InvestigationOver}
+            {#if $currentGame.GameOver}
+                {$t('criminalReleasedInstruction')}
+            {:else if $currentGame.investigation?.InvestigationOver}
                 {$t('arrestInstruction')}
             {:else if $currentGame.investigation?.rounds?.at(-1)?.answer != ""}
                 {#if $currentGame.investigation?.rounds?.at(-1)?.answer?.toLowerCase() == "yes"}{$t('release-no')}

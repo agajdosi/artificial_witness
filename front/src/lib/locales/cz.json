@@ -8,6 +8,8 @@
     "waiting": "Počkejte na odpověď...",
     "arrest": "Zatkněte zločince!",
     "arrestInstruction": "A zahajte nové vyšetřování.",
+    "criminalReleased": "Zločinec byl propuštěn!",
+    "criminalReleasedInstruction": "Zkuste to v nové hře.",
     "interrogated": "Vyslýchaný",
     "buttons": {
         "newGame": "Nová hra",

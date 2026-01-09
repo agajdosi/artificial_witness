@@ -67,7 +67,7 @@
         return hint.set("Start a new game and try it again!");
     }
 </script>
-
+<div class="infobox_overlay" role="dialog" aria-modal="true">
 <div class="infobox">
     <h1>{$t('gameOver.gameOver')}</h1>
     <div class="riptext">{$t('gameOver.riptext')}</div>
@@ -111,26 +111,19 @@
             {/each}
         </div>
     {/if}
-
-    <button
-        on:click={closeScores}
-        on:mouseenter={() => hint.set("Close scores window.")}
-        on:mouseleave={() => hint.set("")}
-        >
-        {$t('buttons.close')}
-    </button>
     <button
         on:click={gotoNewGame}
         on:mouseenter={() => getHintNewGame()}
         on:mouseleave={() => hint.set("")}
         >
         {$t('buttons.newGame')}
-    </button>  
+    </button>
+</div>
 </div>
 
 <style>
 h1 {
-    margin: 10px 0 0 0;
+    margin: 0;
 }
 
 .scores {
@@ -162,25 +155,5 @@ h1 {
     border-radius: 5px;
 }
 
-.infobox {
-    position: absolute;
-    left: 25vw;
-    top: 10vh;
-    background-color: grey;
-    width: 50vw;
-    height: 80vh;
-}
-.riptext {
-    padding: 0 2rem;
-}
-
-@media screen and (max-width: 600px) {
-.infobox {
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-}
-}
 
 </style>

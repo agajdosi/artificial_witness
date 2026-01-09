@@ -8,6 +8,8 @@
     "waiting": "Poczekać na odpowiedź...",
     "arrest": "Aresztuj złoczyńcę!",
     "arrestInstruction": "I rozpocznie się nowe śledzenie.",
+    "criminalReleased": "Przestępca został zwolniony!",
+    "criminalReleasedInstruction": "Spróbuj ponownie w nowej grze.",
     "interrogated": "Wysłuchany",
     "buttons": {
         "newGame": "Nowa gra",
