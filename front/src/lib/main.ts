@@ -48,6 +48,7 @@ export interface FinalScore {
 export interface Player {
     UUID: string;
     Name: string;
+    SeenIntro?: boolean;
 }
 
 export interface Game {

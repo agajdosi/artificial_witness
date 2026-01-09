@@ -45,9 +45,9 @@
         "1": "Welcome, Investigator! <br>Your mission is to find the guilty criminal among 15 suspects.",
         "2": "Each round, the Witness will answer a question about the criminal.",
         "3": "You must eliminate suspects who do NOT match the answer.",
-        "4": "For example, if the question is 'Does the suspect like reading books?' and I say 'Yes', remove those who likely don’t.",
+        "4": "For example, if the question is 'Does the suspect like reading books?' and the witness answers 'Yes',<br>then remove those who likely don’t like reading books.",
         "5": "Continue eliminating suspects round by round until only one remains.",
         "6" : "If the last suspect standing is the correct one, you win!<br>Now, let’s begin…",
-        "play": "Let's Playyy"
+        "play": "Let's Play"
     }
 }

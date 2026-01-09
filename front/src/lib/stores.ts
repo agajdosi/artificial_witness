@@ -51,7 +51,8 @@ const generateUUID = (): string => {
 
 const createNewPlayer = (): Player => ({
     UUID: generateUUID(),
-    Name: ''
+    Name: '',
+    SeenIntro: false
 });
 
 const storedPlayer = localStorage.getItem('player');

@@ -3,7 +3,8 @@
 </svelte:head>
 
 <script lang="ts">
-    import { currentGame, hint, selectedModel } from '$lib/stores';
+    import { currentGame, hint, selectedModel, currentPlayer } from '$lib/stores';
+    import { get } from 'svelte/store';
     import { NextRound, EliminateSuspect, GetGame, NextInvestigation, NewGame, type Suspect } from '$lib/main';
     import Suspects from '$lib/Suspects.svelte';
     import History from '$lib/History.svelte';
@@ -21,6 +22,11 @@
     let overlayConfigVisible: boolean = true;
 
     onMount(async () => {
+        const player = get(currentPlayer);
+        if (!player.SeenIntro) {
+            introVisible = true;
+        }
+        
         if ($currentGame.uuid == ""){
             const model = $selectedModel ?? 'ollama';
             if (model === '') gotoNewGame()
@@ -76,12 +82,15 @@
     let introVisible: boolean = false;
     function handleToggleIntro(event: CustomEvent<{introVisible: boolean}>) {
         introVisible = event.detail.introVisible;
+        if (!introVisible) {
+            currentPlayer.update(p => ({ ...p, SeenIntro: true }));
+        }
     }
 
-    let IdleTimer: NodeJS.Timeout | null = null;
+    let IdleTimer: ReturnType<typeof setTimeout> | null = null;
     window.addEventListener('mousemove', resetIdleTimer); // (re)sets IdleTimer
     function resetIdleTimer(): void {
-        const msTimeout = 5 * 60 * 1000;
+        const msTimeout = 2 * 60 * 1000;
         if (IdleTimer) {
             clearTimeout(IdleTimer);
         }
