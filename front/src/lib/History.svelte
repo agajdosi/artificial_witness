@@ -75,4 +75,17 @@
     border-bottom-right-radius: 0;
     text-transform: capitalize;
 }
+
+.model {
+    margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 600px) {
+    .model {
+        margin-bottom: 0;
+    }
+}
+
+
+
 </style>

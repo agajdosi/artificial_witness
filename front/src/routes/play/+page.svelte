@@ -246,7 +246,7 @@
 .right {
     padding: 0.2rem 0 0 0;
     width: 100%;
-    max-height: 69vh;
+    max-height: 73vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -341,7 +341,8 @@ button.next-round:disabled {
     }
     .right {
         flex-direction: column-reverse;
-        padding: 0 1rem;
+        max-height: unset;
+        margin: 0 0.5rem 2rem 0.5rem;
     }
 }
 
