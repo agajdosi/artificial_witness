@@ -40,5 +40,14 @@
     },
     "new_game": {
         "title": "Wybierz świadka"
+    },
+    "overlayIntro": {
+        "1": "Witaj, śledczy! <br>Twoim zadaniem jest znaleźć winnego przestępcę spośród 15 podejrzanych.",
+        "2": "W każdej rundzie świadek odpowie na pytanie dotyczące przestępcy.",
+        "3": "Musisz wyeliminować podejrzanych, którzy NIE pasują do odpowiedzi.",
+        "4": "Na przykład, jeśli pytanie brzmi: „Czy podejrzany lubi czytać książki?”, a ja odpowiadam „Tak”, usuń tych, którzy prawdopodobnie nie lubią.",
+        "5": "Kontynuuj eliminowanie podejrzanych runda po rundzie, aż pozostanie tylko jeden.",
+        "6": "Jeśli ostatni pozostały podejrzany jest tym właściwym, wygrywasz!<br>Zacznijmy więc…",
+        "play": "Zagrajmy"
     }
 }

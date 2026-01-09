@@ -40,5 +40,14 @@
     },
     "new_game": {
         "title": "Vyber svědka"
+    },
+    "overlayIntro": {
+        "1": "Vítejte, vyšetřovateli! <br>Vaším úkolem je najít viníka mezi 15 podezřelými.",
+        "2": "V každém kole svědek odpoví na otázku týkající se pachatele.",
+        "3": "Musíte vyloučit podezřelé, kteří neodpovídají odpovědi.",
+        "4": "Například, pokud je otázka „Má podezřelý rád čtení knih?“ a já odpovím „Ano“, vyřaďte ty, kteří pravděpodobně ne.",
+        "5": "Pokračujte ve vyřazování podezřelých kolo za kolem, dokud nezůstane pouze jeden.",
+        "6" : "Pokud je poslední podezřelý ten správný, vyhráli jste!<br>Teď začneme…",
+        "play": "Hrajeme"
     }
 }

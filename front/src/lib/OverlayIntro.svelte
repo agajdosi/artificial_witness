@@ -1,6 +1,7 @@
 <script lang="ts">
   import Typed from "typed.js";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
+  import { t, locale } from 'svelte-i18n';
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
@@ -9,25 +10,56 @@
   }
 
   let typedInstance: Typed | null = null;
-  let tutorialSteps = [
-    "Welcome, Investigator! <br>Your mission is to find the guilty criminal among 15 suspects.",
-    "Each round, the Witness will answer a question about the criminal.",
-    "You must eliminate suspects who do NOT match the answer.",
-    "For example, if the question is 'Does the suspect like reading books?' and I say 'Yes', remove those who likely don’t.",
-    "Continue eliminating suspects round by round until only one remains.",
-    "If the last suspect standing is the correct one, you win!<br>Now, let’s begin…"
+
+  let tutorialSteps: string[] = [];
+  let mounted = false;
+
+  $: tutorialSteps = [
+    $t('overlayIntro.1'),
+    $t('overlayIntro.2'),
+    $t('overlayIntro.3'),
+    $t('overlayIntro.4'),
+    $t('overlayIntro.5'),
+    $t('overlayIntro.6')
   ];
 
-  onMount(() => {
-    typedInstance = new Typed("#typed", {
-      strings: tutorialSteps,
+  function initTyped(strings: string[]) {
+    const el = typeof document !== 'undefined' ? document.getElementById('typed') : null;
+    if (!el) return;
+    if (typedInstance) {
+      typedInstance.destroy();
+      typedInstance = null;
+    }
+    typedInstance = new Typed(el as Element, {
+      strings,
       typeSpeed: 60,
       backSpeed: 10,
       fadeOut: true,
       loop: false,
       cursorChar: "|",
     });
+  }
+
+  onMount(() => {
+    mounted = true;
+    // ensure DOM rendered
+    setTimeout(() => initTyped(tutorialSteps), 0);
   });
+
+  // Re-create typed instance when locale (and therefore translations) changes,
+  // but only after component is mounted and the element exists.
+  $: if (mounted) {
+    // guard so we don't call before DOM ready
+    setTimeout(() => initTyped(tutorialSteps), 0);
+  }
+
+  onDestroy(() => {
+    if (typedInstance) {
+      typedInstance.destroy();
+      typedInstance = null;
+    }
+  });
+
 
 </script>
 
@@ -35,7 +67,7 @@
   <p id="content">
     <span id="typed"></span>
   </p>
-  <button on:click={closeIntro}>Let's Play</button>
+  <button on:click={closeIntro}>{$t('overlayIntro.play')}</button>
 </div>
 
 <style>
@@ -58,6 +90,7 @@
 
   #content {
     min-height: 20rem;
+    margin: 2rem;
   }
 
 </style>
