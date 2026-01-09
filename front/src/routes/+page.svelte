@@ -32,8 +32,7 @@
 <footer>
     <Navigation/>
     <div>
-        <a href="https://github.com/agajdosi/artificial_witness">2024-2025</a>
-        <span class="horflip">©</span>
+        <a href="https://github.com/agajdosi/artificial_witness">2024-2026 <span class="horflip">©</span></a>
         <a href="https://gajdosik.org">Andy Gajdosik</a>
     </div>
 </footer>
