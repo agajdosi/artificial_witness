@@ -5,7 +5,9 @@
 </script>
 
 <div class="navigation">
-    <button onclick={() => goto('/')} class="navigation" disabled={page.url.pathname==='/'}>{$t('buttons.back')}</button>
+    {#if page.url.pathname !== '/'}
+        <button onclick={() => goto('/')} class="navigation">{$t('buttons.back')}</button>
+    {/if}
 </div>
 
 <style>
