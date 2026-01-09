@@ -198,7 +198,7 @@
     </div>
 </div>
 
-<div class="bottom">
+<footer>
     <div class="help">
         <Navigation/>
         <button on:click={toggleHelp} class="langbtn">{$t('buttons.help')}</button>
@@ -222,7 +222,7 @@
             score: {$currentGame.Score}
         </div>
     </div>
-</div>
+</footer>
 
 {#if $currentGame.GameOver && scoresVisible}
     <Scores on:toggleScores={handleToggleScores}/>    
@@ -246,27 +246,19 @@
 .right {
     padding: 0.2rem 0 0 0;
     width: 100%;
-    max-height: 73vh;
+    max-height: 69vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.bottom {
-    display: flex;
-    justify-content: space-between;
-    position: absolute;
-    bottom: 0;
-    width: calc(100vw - 2.5rem);
-    padding: 0 0.5rem 0 7px;
-}
 .stats {
     display: flex;
     gap: 1rem;
 }
 
 .top {
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -314,6 +306,7 @@ button.next-round:disabled {
 
 .help {
     display: flex;
+    gap: 0.5rem;
 }
 
 @media screen and (max-width: 600px) {

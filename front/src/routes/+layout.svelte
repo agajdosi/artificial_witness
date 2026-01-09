@@ -159,13 +159,19 @@ BFC prevents margins to overflow outside main and #app, breaking its 100vh.
 }
 
 :global(footer) {
+    margin: 0;
     display: flex;
-    width: 99vw;
     justify-content: space-between;
-    position: absolute;
-    margin: 3px 7px;
+    position: fixed;
+    left: 0;
+    right: 0;
     bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.2rem 0.7rem 0 7px;
+    background-color: rgba(27, 38, 54, 1);
 }
+
 :global(a){
     text-decoration: none;
     color: white;
@@ -215,9 +221,6 @@ BFC prevents margins to overflow outside main and #app, breaking its 100vh.
     :global(.menu > button) {
         width: 50vw;
         margin: 1rem;
-    }
-    :global(footer) {
-        max-width: 97vw;
     }
 }
 
