@@ -47,7 +47,6 @@
 .roles {
     display: flex;
     justify-content: space-between;
-    padding: 0 0 2rem 0;
 }
 
 .round {
@@ -75,11 +74,5 @@
     align-self: flex-end;
     border-bottom-right-radius: 0;
     text-transform: capitalize;
-}
-
-@media screen and (max-width: 600px) {
-    .roles {
-        padding: 0;
-    }
 }
 </style>
