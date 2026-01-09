@@ -317,6 +317,9 @@ button.next-round:disabled {
 }
 
 @media screen and (max-width: 600px) {
+    .top {
+        justify-content: space-around;
+    }
     .top .main{
         flex-direction: column;
         min-height: 10vh;
@@ -329,6 +332,7 @@ button.next-round:disabled {
         font-size: 0.9rem;
         color: #666666;
         justify-content: center;
+        margin: 0;
     }
     .top .answer {
         align-self:center;
