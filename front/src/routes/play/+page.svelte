@@ -245,7 +245,6 @@
 }
 .right {
     padding: 0.2rem 0 0 0;
-    width: 100%;
     max-height: 73vh;
     display: flex;
     flex-direction: column;
