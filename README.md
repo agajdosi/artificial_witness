@@ -40,7 +40,7 @@ Run the Docker build from the project root as we need access to go.mod and go.su
 use --file flag to specify the Dockerfile in backend directory:
 
 ```bash
-VERSION="v1.0.1"
+VERSION="v1.1.0"
 IMAGE="agajdosi/artificial_witness"
 
 docker build \
