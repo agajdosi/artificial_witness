@@ -8,11 +8,12 @@
     export let gameOver: boolean;
     export let investigationOver: boolean;
     export let answerIsLoading: boolean;
+    export let answerFailed: boolean;
 
     const imgDir: string = 'suspects/';
 
     async function selected() {
-        if (suspect.Free || suspect.Fled || gameOver || answerIsLoading ) return;
+        if (suspect.Free || suspect.Fled || gameOver || answerIsLoading || answerFailed) return;
         if (investigationOver) { // last suspect = click to jail, new Investigation coming
             dispatch('suspect_jailing', { 'suspect': suspect})
             return
@@ -23,6 +24,7 @@
     function setHint() {
         if (suspect.Free) return hint.set("Suspect was released.");
         if (answerIsLoading) return hint.set("Before releasing... Wait for the AI to answer the question.");
+        if (answerFailed) return hint.set("AI failed to answer - push retry to ask it again.");
         if (suspect.Fled) return hint.set("Criminal was released, game over!");
         if (gameOver) return hint.set("Falsely investigating the innocent.");
         hint.set("Click to release an innocent suspect.");
@@ -33,6 +35,7 @@
         suspect.Free && "free",
         suspect.Fled && "fled",
         answerIsLoading && "waiting",
+        answerFailed && "offline",
         investigationOver && !suspect.Free && "to_jail",
         gameOver && !suspect.Fled && !suspect.Free && "accused"
     ].filter(Boolean).join(" ");
@@ -45,7 +48,7 @@
     on:keydown={selected}
     on:mouseenter={setHint}
     on:mouseleave={() => hint.set("")}
-    aria-disabled={suspect.Free || suspect.Fled || gameOver }
+    aria-disabled={suspect.Free || suspect.Fled || gameOver || answerFailed}
     role="button"
     tabindex="0"
     >
@@ -114,7 +117,7 @@
     }
 
     .offline {
-        cursor: wait;
+        cursor: not-allowed;
     }
 
 @media screen and (max-width: 600px) {

@@ -6,11 +6,12 @@
     export let gameOver: boolean;
     export let investigationOver: boolean;
     export let answerIsLoading: boolean;
+    export let answerFailed: boolean;
 </script>
 
 <div class="suspects">
     {#each suspects as suspect}
-        <SuspectSvelte suspect={suspect} {gameOver} {investigationOver} {answerIsLoading} on:suspect_freeing on:suspect_jailing />
+        <SuspectSvelte suspect={suspect} {gameOver} {investigationOver} {answerIsLoading} {answerFailed} on:suspect_freeing on:suspect_jailing />
     {/each}
 </div>
 

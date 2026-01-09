@@ -5,7 +5,7 @@
 <script lang="ts">
     import { currentGame, hint, selectedModel, currentPlayer } from '$lib/stores';
     import { get } from 'svelte/store';
-    import { NextRound, EliminateSuspect, GetGame, NextInvestigation, NewGame, type Suspect } from '$lib/main';
+    import { NextRound, EliminateSuspect, GetGame, NextInvestigation, NewGame, type Suspect, getOrGenerateAnswer } from '$lib/main';
     import Suspects from '$lib/Suspects.svelte';
     import History from '$lib/History.svelte';
     import Scores from '$lib/Scores.svelte';
@@ -62,6 +62,29 @@
         const game = await GetGame();
         currentGame.set(game);
         console.log(`GAME OVER: ${game.GameOver}`);
+    }
+
+    async function handleRetryAnswer() {
+        const roundUUID = $currentGame.investigation?.rounds?.at(-1)?.uuid;
+        if (!roundUUID) return;
+            hint.set("Waiting for the AI witness to answer the question.");
+            const localGame = get(currentGame);
+            if (localGame?.investigation?.rounds?.length) {
+                localGame.investigation.rounds[localGame.investigation.rounds.length - 1].answer = "";
+                currentGame.set(localGame);
+            }
+
+            const answer = await getOrGenerateAnswer(roundUUID);
+            const g = get(currentGame);
+            if (g?.investigation?.rounds?.length) {
+                const answerText = answer?.Text;
+                if (!answerText) {
+                    throw new Error('Generated answer is empty');
+                }
+                g.investigation.rounds[g.investigation.rounds.length - 1].answer = answerText;
+                currentGame.set(g);
+            }
+            hint.set("");
     }
 
     // Scores
@@ -137,6 +160,24 @@
                     >
                     *{$t('thinking')}*
                 </div>
+            {:else if $currentGame.investigation?.rounds?.at(-1)?.answer == "__AI_FAILED__"}
+                <div class="ai-failed" role="tooltip">
+                    <button
+                        on:click={handleRetryAnswer}
+                        on:mouseenter={() => hint.set("AI failed to answer. You can try asking again.")}
+                        on:mouseleave={() => hint.set("")}>
+                        AI failed to answer. Retry!
+                    </button>
+                </div>
+            {:else if $currentGame.investigation?.rounds?.at(-1)?.answer == "__SERVER_FAILED__"}
+                <div class="ai-failed" role="tooltip">
+                    <button
+                        on:click={handleRetryAnswer}
+                        on:mouseenter={() => hint.set("AI failed to answer. You can try asking again.")}
+                        on:mouseleave={() => hint.set("")}>
+                        Answering failed. Retry!
+                    </button>
+                </div>
             {:else}
                 <div class="answer"
                     role="tooltip"
@@ -153,6 +194,10 @@
                 {$t('criminalReleasedInstruction')}
             {:else if $currentGame.investigation?.InvestigationOver}
                 {$t('arrestInstruction')}
+            {:else if $currentGame.investigation?.rounds?.at(-1)?.answer == "__AI_FAILED__"}
+                AI failed to answer, please retry!
+            {:else if $currentGame.investigation?.rounds?.at(-1)?.answer == "__SERVER_FAILED__"}
+                Answering failed, please retry!
             {:else if $currentGame.investigation?.rounds?.at(-1)?.answer != ""}
                 {#if $currentGame.investigation?.rounds?.at(-1)?.answer?.toLowerCase() == "yes"}{$t('release-no')}
                 {:else}{$t('release-yes')}
@@ -178,6 +223,7 @@
             gameOver={$currentGame.GameOver}
             investigationOver={$currentGame.investigation?.InvestigationOver}
             answerIsLoading={$currentGame.investigation?.rounds?.at(-1)?.answer == ""}
+            answerFailed={$currentGame.investigation?.rounds?.at(-1)?.answer == "__AI_FAILED__" || $currentGame.investigation?.rounds?.at(-1)?.answer == "__SERVER_FAILED__"}
             on:suspect_freeing={handleSuspectFreeing}
             on:suspect_jailing={NextInvestigation}
         />

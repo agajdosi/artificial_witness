@@ -314,14 +314,19 @@ func GetOrGenerateAnswerHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("🔍 GetOrGenerateAnswerHandler() request: %v", r)
 	playerUUID := r.URL.Query().Get("player_uuid")
 	if playerUUID == "" {
-		log.Printf("GetOrGenerateAnswerHandler() error: query parameter 'player_uuid' cannot be empty!")
+		errMsg := "query parameter 'player_uuid' cannot be empty!"
+		log.Printf("GetOrGenerateAnswerHandler(): %s\n", errMsg)
 		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(errMsg))
 		return
 	}
 	game, err := database.GetCurrentGame(playerUUID)
 	question := game.Investigation.Rounds[len(game.Investigation.Rounds)-1].Question.English
 	if err != nil {
-		log.Printf("GetOrGenerateAnswerHandler() could not get currentGame: %v\n", err)
+		errMsg := fmt.Sprintf("Error getting currentGame for player_uuid %s: %v", playerUUID, err)
+		log.Printf("GetOrGenerateAnswerHandler(): %v\n", errMsg)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(errMsg))
 		return
 	}
 
@@ -330,7 +335,10 @@ func GetOrGenerateAnswerHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO: get the service based on the current game's Model
 	service, err := database.GetServiceForModel(game.Model)
 	if err != nil {
-		log.Printf("GetOrGenerateAnswerHandler() could not get service for model %s, %v\n", game.Model, err)
+		errMsg := fmt.Sprintf("Error getting service for model %s: %v", game.Model, err)
+		log.Printf("GetOrGenerateAnswerHandler(): %v\n", errMsg)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(errMsg))
 		return
 	}
 
@@ -340,21 +348,30 @@ func GetOrGenerateAnswerHandler(w http.ResponseWriter, r *http.Request) {
 		false, // do not be strict, allow fallback to any description
 	)
 	if err != nil {
-		log.Printf("GetOrGenerateAnswerHandler() could not get descriptions for suspect: %v\n", err)
+		errMsg := fmt.Sprintf("Error getting descriptions for suspect: %v", err)
+		log.Printf("GetOrGenerateAnswerHandler(): %v\n", errMsg)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(errMsg))
 		return
 	}
 
 	x := randomForThisInvestigation(game.Investigation.UUID, len(descriptions))
 	answer, err := database.GenerateAnswer(question, descriptions[x].Description, game.Model, service)
 	if err != nil {
-		log.Printf("GetOrGenerateAnswerHandler() error generating answer: %v\n", err)
+		errMsg := fmt.Sprintf("Error generating answer: %v", err)
+		log.Printf("GetOrGenerateAnswerHandler(): %v\n", errMsg)
+		w.WriteHeader(http.StatusTeapot)
+		w.Write([]byte(errMsg))
 		return
 	}
 
 	// TODO: move to database.GenerateAnswer()?
 	err = database.SaveAnswer(answer, game.Investigation.Rounds[len(game.Investigation.Rounds)-1].UUID)
 	if err != nil {
-		log.Printf("GetOrGenerateAnswerHandler() error saving answer: %v\n", err)
+		errMsg := fmt.Sprintf("Error saving answer: %v", err)
+		log.Printf("GetOrGenerateAnswerHandler(): %v\n", errMsg)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(errMsg))
 		return
 	}
 
@@ -367,8 +384,10 @@ func GetOrGenerateAnswerHandler(w http.ResponseWriter, r *http.Request) {
 			Timestamp: "",
 		})
 	if err != nil {
-		log.Printf("GetOrGenerateAnswerHandler() error marshalling answer: %v\n", err)
+		errMsg := fmt.Sprintf("Error marshalling answer: %v", err)
+		log.Printf("GetOrGenerateAnswerHandler(): %v\n", errMsg)
 		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(errMsg))
 		return
 	}
 

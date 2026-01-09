@@ -285,8 +285,16 @@ export async function getOrGenerateAnswer(roundUUID: string): Promise<Answer|und
     try {
         let answer: Answer; 
         const response = await fetch(`${API_URL}/get_or_generate_answer?player_uuid=${player.UUID}`, initGET);
-        if (!response.ok) {
-            throw new Error('Failed to /get_or_generate_answer');
+        // Teapot means AI failed - this can happen as LLM reasoning is not perfect
+        if (response.status === 418) {
+            const bodyText = await response.text();
+            console.log(`Request /get_or_generate_answer returned 418 (I'm a teapot) - AI failed to answer the question: ${bodyText}`);
+            return { UUID: '', Text: '__AI_FAILED__', Timestamp: new Date().toISOString() } as Answer;
+        // RN we use just 500 code which is for database and other unexpected errors
+        } else if (!response.ok) { 
+            const bodyText = await response.text();
+            console.error(`getOrGenerateAnswer received non-ok response ${response.status}, quite unexpected: ${bodyText}`);
+            return { UUID: '', Text: '__SERVER_FAILED__', Timestamp: new Date().toISOString() } as Answer;
         }
 
         answer = await response.json() as Answer;
