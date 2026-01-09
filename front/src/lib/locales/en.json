@@ -16,7 +16,8 @@
         "nextQuestion": "Next Question",
         "close": "Close",
         "confirm": "Confirm",
-        "help": "How to play"
+        "help": "How to play",
+        "back": "Back"
     },
     "gameOver": {
         "gameOver": "Game Over!",

@@ -16,7 +16,8 @@
         "nextQuestion": "Następne pytanie",
         "close": "Zamknij",
         "confirm": "Potwierdź",
-        "help": "Jak grać"
+        "help": "Jak grać",
+        "back": "Wstecz"
     },
     "gameOver": {
         "gameOver": "Koniec gry!",

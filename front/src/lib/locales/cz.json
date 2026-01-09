@@ -16,7 +16,8 @@
         "nextQuestion": "Další otázka",
         "close": "Zavřít",
         "confirm": "Potvrdit",
-        "help": "Jak hrát"
+        "help": "Jak hrát",
+        "back": "Zpět"
     },
     "gameOver": {
         "gameOver": "Konec hry!",
